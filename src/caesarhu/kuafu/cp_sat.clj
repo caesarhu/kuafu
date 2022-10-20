@@ -30,3 +30,25 @@
         _ (.. solver (getParameters) (setEnumerateAllSolutions true))
         status (str (.solve solver model cb))]
     {:count @counter :values @values :status status}))
+
+(defn rand-letter-str
+  [len]
+  (transduce
+   (map (fn [_]
+          (let [rnd (rand-int 52)]
+            (char (+ (mod rnd 26)
+                     (int (if (< rnd 26) \a \A)))))))
+   str
+   ""
+   (range len)))
+
+(defn bool-var
+  ([^com.google.ortools.sat.CpModel model ^java.lang.String name]
+   (.newBoolVar model name))
+  ([^com.google.ortools.sat.CpModel model]
+   (.newBoolVar model (rand-letter-str 10))))
+
+(defn constant
+  [^com.google.ortools.sat.CpModel model ^long value]
+  (.newConstant model value))
+
