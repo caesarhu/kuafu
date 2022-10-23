@@ -1,7 +1,7 @@
 (ns caesarhu.kuafu.domain
   (:import [com.google.ortools.util Domain]))
 
-(defn new-domain
+(defn domain
   ([]
    (Domain.))
   ([^long value]

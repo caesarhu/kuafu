@@ -1,5 +1,5 @@
 (ns caesarhu.example.euler-001
-  (:require [caesarhu.kuafu.cp-sat :as sat])
+  (:require [caesarhu.kuafu.sat :as sat])
   (:import [com.google.ortools.sat CpModel IntVar CpSolverSolutionCallback LinearExpr]
            [com.google.ortools.util Domain]))
 

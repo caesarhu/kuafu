@@ -1,6 +1,6 @@
-(ns caesarhu.kuafu.cp-sat-test
+(ns caesarhu.kuafu.sat-test
   (:require [clojure.test :refer :all]
-            [caesarhu.kuafu.cp-sat :as sat]))
+            [caesarhu.kuafu.sat :as sat]))
 
 (deftest solutions-test
   (testing "cp-sat solutions test."
