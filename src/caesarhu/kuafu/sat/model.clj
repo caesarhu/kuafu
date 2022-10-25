@@ -159,7 +159,7 @@
   [^CpModel model variables inverseVariables]
   (.addInverse model (into-array variables) (into-array inverseVariables)))
 
-(defn addReservoirConstraint
+(defn add-reservoir-constraint
   [^CpModel model minLevel maxLevel]
   (.addReservoirConstraint model minLevel maxLevel))
 
