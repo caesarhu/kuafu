@@ -14,7 +14,7 @@
         y (m/int-var model (d/from-values [3 5]) "y")
         values (atom (list))
         solver (s/sat-solver)]
-    (.addModuloEquality model zero x y)
+    (m/add-modulo-equality model zero x y)
     (s/set-all-solutions solver true)
     (s/solve solver model (s/callback values [x]))
     @values))

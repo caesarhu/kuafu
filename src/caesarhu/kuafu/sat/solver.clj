@@ -21,7 +21,7 @@
   (.bestObjectiveBound s))
 
 (defn value
-  [^CpSolver s expr]
+  [s expr]
   (.value s expr))
 
 (defn boolean-value
@@ -79,7 +79,7 @@
   (let [cb (proxy [CpSolverSolutionCallback] []
              (onSolutionCallback []
                (let [solution (cond
-                                (sequential? thing) (mapv #(.value this %) thing)
+                                (sequential? thing) (mapv #(value this %) thing)
                                 (fn? thing) (thing this)
                                 :else (throw (Exception. "solution-callback arguments fail!")))]
                  (swap! values conj solution))))]
