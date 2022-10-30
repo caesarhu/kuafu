@@ -1,10 +1,7 @@
 (ns caesarhu.example.euler-001
-  (:require [caesarhu.kuafu.sat :as sat]
-            [caesarhu.kuafu.domain :as d]
+  (:require [caesarhu.kuafu.domain :as d]
             [caesarhu.kuafu.sat.model :as m]
-            [caesarhu.kuafu.sat.solver :as s])
-  (:import [com.google.ortools.sat CpSolver CpModel IntVar CpSolverSolutionCallback LinearExpr]
-           [com.google.ortools.util Domain]))
+            [caesarhu.kuafu.sat.solver :as s]))
 
 (defn euler-001
   [n]

@@ -25,8 +25,8 @@
   (.value s expr))
 
 (defn boolean-value
-  [^CpSolver s var]
-  (.booleanValue s var))
+  [solver var]
+  (.booleanValue solver var))
 
 (defn response
   [^CpSolver s]
@@ -76,11 +76,10 @@
 
 (defn callback
   [values thing]
-  (let [cb (proxy [CpSolverSolutionCallback] []
-             (onSolutionCallback []
-               (let [solution (cond
-                                (sequential? thing) (mapv #(value this %) thing)
-                                (fn? thing) (thing this)
-                                :else (throw (Exception. "solution-callback arguments fail!")))]
-                 (swap! values conj solution))))]
-    cb))
+  (proxy [CpSolverSolutionCallback] []
+    (onSolutionCallback []
+      (let [solution (cond
+                       (sequential? thing) (mapv #(value this %) thing)
+                       (fn? thing) (thing this)
+                       :else (throw (Exception. "solution-callback arguments fail!")))]
+        (swap! values conj solution)))))
