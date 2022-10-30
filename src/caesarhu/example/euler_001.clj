@@ -1,25 +1,23 @@
 (ns caesarhu.example.euler-001
-  (:require [caesarhu.kuafu.sat.solver :refer :all]
-            [caesarhu.kuafu.sat.model :refer :all]
-            [caesarhu.kuafu.domain :refer [from-values]])
-  (:import [com.google.ortools.sat CpModel CpSolver CpSolverSolutionCallback]))
+  (:require [caesarhu.kuafu.sat :as sat]
+            [caesarhu.kuafu.domain :as d]
+            [caesarhu.kuafu.sat.model :as m]
+            [caesarhu.kuafu.sat.solver :as s])
+  (:import [com.google.ortools.sat CpSolver CpModel IntVar CpSolverSolutionCallback LinearExpr]
+           [com.google.ortools.util Domain]))
 
 (defn euler-001
   [n]
-  (let [model (sat-model)
-        zero (int-var model 0)
-        x (int-var model 1 (dec n) "x")
-        y (int-var model (from-values [3 5]) "y")
-        solver (sat-solver)
-        solutions (atom [])
-        callback (fn [vars] 
-                   (proxy [CpSolverSolutionCallback] []
-                              (onSolutionCallback []
-                                (let [solution (mapv #(value this %) vars)]
-                                  (swap! solutions conj solution)))))]
-    (add-modulo-equality model zero x y)
-    (solve solver model (callback [x]))
-    @solutions))
+  (let [model (m/sat-model)
+        zero (m/int-var model 0)
+        x (m/int-var model 1 (dec n) "x")
+        y (m/int-var model (d/from-values [3 5]) "y")
+        values (atom (list))
+        solver (s/sat-solver)]
+    (.addModuloEquality model zero x y)
+    (s/set-all-solutions solver true)
+    (s/solve solver model (s/callback values [x]))
+    @values))
 
 (comment
   (time (euler-001 1000))

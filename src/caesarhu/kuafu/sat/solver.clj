@@ -4,8 +4,6 @@
 
 @ortools-loader
 
-(defonce ^:dynamic *solve-out* (atom []))
-
 (defn sat-solver
   []
   (CpSolver.))
@@ -66,16 +64,6 @@
   [^CpSolver s]
   (.getSolutionInfo s))
 
-(defn solution-callback
-  [callback]
-  (proxy [CpSolverSolutionCallback] []
-    (onSolutionCallback []
-      (let [solution (cond
-                       (fn? callback) (callback this)
-                       (sequential? callback) (mapv #(value this %) callback)
-                       :else (throw (Exception. "solution-callback arguments fail!")))]
-        (swap! *solve-out* conj solution)))))
-
 (defn solve
   ([^CpSolver s ^CpModel model]
    (.solve s model))
@@ -85,3 +73,14 @@
 (defn set-all-solutions
   [^CpSolver s bool]
   (.. s (getParameters) (setEnumerateAllSolutions bool)))
+
+(defn callback
+  [values thing]
+  (let [cb (proxy [CpSolverSolutionCallback] []
+             (onSolutionCallback []
+               (let [solution (cond
+                                (sequential? thing) (mapv #(.value this %) thing)
+                                (fn? thing) (thing this)
+                                :else (throw (Exception. "solution-callback arguments fail!")))]
+                 (swap! values conj solution))))]
+    cb))
