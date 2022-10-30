@@ -1,5 +1,8 @@
 (ns caesarhu.kuafu.sat.linear-expr
+  (:require [caesarhu.kuafu.ortools :refer [ortools-loader]])
   (:import [com.google.ortools.sat LinearExpr LinearArgument]))
+
+@ortools-loader
 
 (defn num-elements
   [^LinearExpr expr]

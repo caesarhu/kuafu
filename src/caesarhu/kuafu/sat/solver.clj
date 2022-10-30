@@ -1,7 +1,12 @@
 (ns caesarhu.kuafu.sat.solver
+  (:require [caesarhu.kuafu.ortools :refer [ortools-loader]])
   (:import [com.google.ortools.sat CpModel CpSolver CpSolverSolutionCallback]))
 
-(defn solver
+@ortools-loader
+
+(defonce ^:dynamic *solve-out* (atom []))
+
+(defn sat-solver
   []
   (CpSolver.))
 
@@ -61,19 +66,22 @@
   [^CpSolver s]
   (.getSolutionInfo s))
 
-(defn solve
-  [^CpModel model vars]
-  (let [solver (solver)
-        status (str (.solve solver model))]
-    {:values (map #(value solver %) vars) :status status}))
+(defn solution-callback
+  [callback]
+  (proxy [CpSolverSolutionCallback] []
+    (onSolutionCallback []
+      (let [solution (cond
+                       (fn? callback) (callback this)
+                       (sequential? callback) (mapv #(value this %) callback)
+                       :else (throw (Exception. "solution-callback arguments fail!")))]
+        (swap! *solve-out* conj solution)))))
 
-(defn solutions
-  [^CpModel model vars]
-  (let [values (atom [])
-        cb (proxy [CpSolverSolutionCallback] []
-             (onSolutionCallback []
-               (swap! values conj (mapv #(value this %) vars))))
-        solver (solver)
-        _ (.. solver (getParameters) (setEnumerateAllSolutions true))
-        status (str (.solve solver model cb))]
-    {:count (count @values) :values @values :status status}))
+(defn solve
+  ([^CpSolver s ^CpModel model]
+   (.solve s model))
+  ([^CpSolver s ^CpModel model cb]
+   (.solve s model cb)))
+
+(defn set-all-solutions
+  [^CpSolver s bool]
+  (.. s (getParameters) (setEnumerateAllSolutions bool)))

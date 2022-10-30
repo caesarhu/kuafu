@@ -1,9 +1,12 @@
 (ns caesarhu.kuafu.sat.model
-  (:require [caesarhu.kuafu.util :refer [rand-name]])
+  (:require [caesarhu.kuafu.util :refer [rand-name]]
+            [caesarhu.kuafu.ortools :refer [ortools-loader]])
   (:import [com.google.ortools.sat CpModel Literal]
            [com.google.ortools.util Domain]))
 
-(defn model
+@ortools-loader
+
+(defn sat-model
   []
   (CpModel.))
 
@@ -184,8 +187,8 @@
   (.addAbsEquality model target expr))
 
 (defn add-modulo-equality
-  [^CpModel model var mod]
-  (.addModuloEquality model var mod))
+  [^CpModel model target var mod]
+  (.addModuloEquality  model target var mod))
 
 (defn add-multiplication-equality
   [^CpModel model target exprs]

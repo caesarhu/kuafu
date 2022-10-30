@@ -1,11 +1,11 @@
 (ns caesarhu.example.euler-004
-  (:require [caesarhu.kuafu.sat :as sat])
-  (:import [com.google.ortools.sat CpModel IntVar CpSolverSolutionCallback LinearExpr]
+  (:require [caesarhu.kuafu.sat.solver :refer [solve]])
+  (:import [com.google.ortools.sat CpSolver CpModel IntVar CpSolverSolutionCallback LinearExpr]
            [com.google.ortools.util Domain]))
 
 (defn palindrome
   []
-  (let [model (sat/new-model)
+  (let [model (CpSolver.)
         a (.newIntVar model 1 9 "a")
         b (.newIntVar model 0 9 "b")
         c (.newIntVar model 0 9 "c")
@@ -15,7 +15,7 @@
     (.addEquality model p (LinearExpr/weightedSum (into-array [a b c c b a]) (long-array [100000 10000 1000 100 10 1])))
     (.maximize model p)
     (.addMultiplicationEquality model p x y)
-    (->> (sat/solve model [p])
+    (->> (solve model [p])
          :values)))
 
 (comment

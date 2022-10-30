@@ -1,5 +1,8 @@
 (ns caesarhu.kuafu.domain
+  (:require [caesarhu.kuafu.ortools :refer [ortools-loader]])
   (:import [com.google.ortools.util Domain]))
+
+@ortools-loader
 
 (defn domain
   ([]
