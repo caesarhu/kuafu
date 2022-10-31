@@ -191,10 +191,10 @@
   (.addModuloEquality  model target var mod))
 
 (defn add-multiplication-equality
-  [model target exprs]
-  (if (coll? exprs)
-    (.addMultiplicationEquality model target (into-array exprs))
-    (.addMultiplicationEquality model target exprs)))
+  ([model target exprs]
+   (.addMultiplicationEquality model target (into-array exprs)))
+  ([model target left right]
+   (.addMultiplicationEquality model target left right)))
 
 (defn add-no-overlap
   [model intervalVars]
