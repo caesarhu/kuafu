@@ -9,70 +9,70 @@
   (CpSolver.))
 
 (defn stop-search
-  [^CpSolver s]
-  (.stopSearch s))
+  [solver]
+  (.stopSearch solver))
 
 (defn objective-value
-  [^CpSolver s]
-  (.objectiveValue s))
+  [solver]
+  (.objectiveValue solver))
 
 (defn best-objective-bound
-  [^CpSolver s]
-  (.bestObjectiveBound s))
+  [solver]
+  (.bestObjectiveBound solver))
 
 (defn value
-  [s expr]
-  (.value s expr))
+  [solver expr]
+  (.value solver expr))
 
-(defn boolean-value
+(defn boolean-value 
   [solver var]
   (.booleanValue solver var))
 
 (defn response
-  [^CpSolver s]
-  (.response s))
+  [solver]
+  (.response solver))
 
 (defn num-branches
-  [^CpSolver s]
-  (.numBranches s))
+  [solver]
+  (.numBranches solver))
 
 (defn num-conflicts
-  [^CpSolver s]
-  (.numConflicts s))
+  [solver]
+  (.numConflicts solver))
 
 (defn wall-time
-  [^CpSolver s]
-  (.wallTime s))
+  [solver]
+  (.wallTime solver))
 
 (defn user-time
-  [^CpSolver s]
-  (.userTime s))
+  [solver]
+  (.userTime solver))
 
 (defn sufficient-assumptions-for-infeasibility
-  [^CpSolver s]
-  (.sufficientAssumptionsForInfeasibility s))
+  [solver]
+  (.sufficientAssumptionsForInfeasibility solver))
 
 (defn get-parameters
-  [^CpSolver s]
-  (.getParameters s))
+  [solver]
+  (.getParameters solver))
 
 (defn response-stats
-  [^CpSolver s]
-  (.responseStats s))
+  [solver]
+  (.responseStats solver))
 
 (defn get-solution-info
-  [^CpSolver s]
-  (.getSolutionInfo s))
+  [solver]
+  (.getSolutionInfo solver))
 
 (defn solve
-  ([^CpSolver s ^CpModel model]
-   (.solve s model))
-  ([^CpSolver s ^CpModel model cb]
-   (.solve s model cb)))
+  ([solver model]
+   (.solve solver model))
+  ([solver model cb]
+   (.solve solver model cb)))
 
 (defn set-all-solutions
-  [^CpSolver s bool]
-  (.. s (getParameters) (setEnumerateAllSolutions bool)))
+  [solver bool]
+  (.. solver (getParameters) (setEnumerateAllSolutions bool)))
 
 (defn callback
   [values thing]

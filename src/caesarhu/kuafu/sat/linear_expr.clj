@@ -5,31 +5,31 @@
 @ortools-loader
 
 (defn num-elements
-  [^LinearExpr expr]
+  [expr]
   (.numElements expr))
 
 (defn get-variable-index
-  [^LinearExpr expr index]
+  [expr index]
   (.getVariableIndex expr index))
 
 (defn get-coefficient
-  [^LinearExpr expr index]
+  [expr index]
   (.getCoefficient expr index))
 
 (defn get-offset
-  [^LinearExpr expr]
+  [expr]
   (.getOffset expr))
 
 (defn constant
-  [^Long value]
+  [value]
   (LinearExpr/constant value))
 
 (defn term
-  [^LinearArgument expr ^Long coeff]
+  [expr coeff]
   (LinearExpr/term expr coeff))
 
 (defn affine
-  [^LinearArgument expr ^Long coeff ^Long offset]
+  [expr coeff offset]
   (LinearExpr/affine expr coeff offset))
 
 (defn sum

@@ -11,263 +11,263 @@
   (CpModel.))
 
 (defn bool-var
-  ([^CpModel model ^java.lang.String name]
+  ([model name]
    (.newBoolVar model name))
-  ([^CpModel model]
+  ([model]
    (.newBoolVar model (rand-name))))
 
 (defmulti int-var (fn [_ & xs] (->> (map class xs) vec)))
 
-(defmethod int-var [Long] [^CpModel model value] (.newConstant model value))
-(defmethod int-var [Domain String] [^CpModel model d name] (.newIntVarFromDomain model d name))
-(defmethod int-var [Domain] [^CpModel model d] (.newIntVarFromDomain model d (rand-name)))
-(defmethod int-var [Long Long String] [^CpModel model lb ub name]
+(defmethod int-var [Long] [model value] (.newConstant model value))
+(defmethod int-var [Domain String] [model d name] (.newIntVarFromDomain model d name))
+(defmethod int-var [Domain] [model d] (.newIntVarFromDomain model d (rand-name)))
+(defmethod int-var [Long Long String] [model lb ub name]
   (.newIntVar model lb ub name))
-(defmethod int-var [Long Long] [^CpModel model lb ub]
+(defmethod int-var [Long Long] [model lb ub]
   (.newIntVar model lb ub (rand-name)))
 
 (defn new-fixed-interval
-  ([^CpModel model start size name]
+  ([model start size name]
    (.newFixedInterval model start size name))
-  ([^CpModel model start size]
+  ([model start size]
    (.newFixedInterval model start size (rand-name))))
 
 (defn interval-var
-  ([^CpModel model start size end name]
+  ([model start size end name]
    (.newIntervalVar model start size end name))
-  ([^CpModel model start size end]
+  ([model start size end]
    (.newIntervalVar model start size end (rand-name))))
 
 (defn fixed-size-interval-var
-  ([^CpModel model start size name]
+  ([model start size name]
    (.newFixedSizeIntervalVar model start size name))
-  ([^CpModel model start size]
+  ([model start size]
    (.newFixedSizeIntervalVar model start size (rand-name))))
 
 (defn new-optional-interval-var
-  ([^CpModel model start size end isPresent name]
+  ([model start size end isPresent name]
    (.newOptionalIntervalVar model start size end isPresent name))
-  ([^CpModel model start size end isPresent]
+  ([model start size end isPresent]
    (.newOptionalIntervalVar model start size end isPresent (rand-name))))
 
 (defn new-optional-fixed-size-interval-var
-  ([^CpModel model start size isPresent name]
+  ([model start size isPresent name]
    (.newOptionalFixedSizeIntervalVar model start size isPresent name))
-  ([^CpModel model start size isPresent]
+  ([model start size isPresent]
    (.newOptionalFixedSizeIntervalVar model start size isPresent (rand-name))))
 
 (defn new-optional-fixed-interval
-  ([^CpModel model start size isPresent name]
+  ([model start size isPresent name]
    (.newOptionalFixedInterval model start size isPresent name))
-  ([^CpModel model start size isPresent]
+  ([model start size isPresent]
    (.newOptionalFixedInterval model start size isPresent (rand-name))))
 
 (defn true-literal
-  [^CpModel model]
+  [model]
   (.trueLiteral model))
 
 (defn false-literal
-  [^CpModel model]
+  [model]
   (.falseLiteral model))
 
 (defn add-bool-or
-  [^CpModel model literals]
+  [model literals]
   (.addBoolOr model (into-array literals)))
 
 (defn add-at-least-one
-  [^CpModel model literals]
+  [model literals]
   (.addAtLeastOne model (into-array literals)))
 
 (defn add-at-most-one
-  [^CpModel model literals]
+  [model literals]
   (.addAtMostOne model (into-array literals)))
 
 (defn add-exactly-one
-  [^CpModel model literals]
+  [model literals]
   (.addExactlyOne model (into-array literals)))
 
 (defn add-bool-and
-  [^CpModel model literals]
+  [model literals]
   (.addBoolAnd model (into-array literals)))
 
 (defn add-bool-xor
-  [^CpModel model literals]
+  [model literals]
   (.addBoolXor model (into-array literals)))
 
 (defn add-implication
-  [^CpModel model ^Literal a ^Literal b]
+  [model a b]
   (.addImplication model a b))
 
 (defn add-linear-expression-in-domain
-  [^CpModel model expr d]
+  [model expr d]
   (.addLinearExpressionInDomain model expr d))
 
 (defn add-linear-constraint
-  [^CpModel model expr lb ub]
+  [model expr lb ub]
   (.addLinearConstraint model expr lb ub))
 
 (defn add-equality
-  [^CpModel model expr value]
+  [model expr value]
   (.addEquality model expr value))
 
 (defn add-less-or-equal
-  [^CpModel model expr value]
+  [model expr value]
   (.addLessOrEqual model expr value))
 
 (defn add-less-than
-  [^CpModel model expr value]
+  [model expr value]
   (.addLessThan model expr value))
 
 (defn add-greater-or-equal
-  [^CpModel model expr value]
+  [model expr value]
   (.addGreaterOrEqual model expr value))
 
 (defn add-greater-than
-  [^CpModel model expr value]
+  [model expr value]
   (.addGreaterThan model expr value))
 
 (defn add-different
-  [^CpModel model expr value]
+  [model expr value]
   (.addDifferent model expr value))
 
 (defn add-all-different
-  [^CpModel model expressions]
+  [model expressions]
   (.addAllDifferent model (into-array expressions)))
 
 (defn add-element
-  [^CpModel model index values target]
+  [model index values target]
   (.addElement model index values target))
 
 (defn add-circuit
-  [^CpModel model]
+  [model]
   (.addCircuit model))
 
 (defn add-multiple-circuit
-  [^CpModel model]
+  [model]
   (.addMultipleCircuit model))
 
 (defn add-allowed-assignments
-  [^CpModel model variables]
+  [model variables]
   (.addAllowedAssignments model (into-array variables)))
 
 (defn add-forbidden-assignments
-  [^CpModel model variables]
+  [model variables]
   (.addForbiddenAssignments model (into-array variables)))
 
 (defn add-automaton
-  [^CpModel model transitionVariables startingState finalStates]
+  [model transitionVariables startingState finalStates]
   (.addAutomaton model (into-array transitionVariables) startingState (long-array finalStates)))
 
 (defn add-inverse
-  [^CpModel model variables inverseVariables]
+  [model variables inverseVariables]
   (.addInverse model (into-array variables) (into-array inverseVariables)))
 
 (defn add-reservoir-constraint
-  [^CpModel model minLevel maxLevel]
+  [model minLevel maxLevel]
   (.addReservoirConstraint model minLevel maxLevel))
 
 (defn add-map-domain
-  [^CpModel model var booleans offset]
+  [model var booleans offset]
   (.addMapDomain model var (into-array booleans) offset))
 
 (defn add-min-equality
-  [^CpModel model target exprs]
+  [model target exprs]
   (.addMinEquality model target (into-array exprs)))
 
 (defn add-max-equality
-  [^CpModel model target exprs]
+  [model target exprs]
   (.addMaxEquality model target (into-array exprs)))
 
 (defn add-division-equality
-  [^CpModel model target exprs num denom]
+  [model target exprs num denom]
   (.addDivisionEquality model target exprs num denom))
 
 (defn add-abs-equality
-  [^CpModel model target expr]
+  [model target expr]
   (.addAbsEquality model target expr))
 
 (defn add-modulo-equality
-  [^CpModel model target var mod]
+  [model target var mod]
   (.addModuloEquality  model target var mod))
 
 (defn add-multiplication-equality
-  [^CpModel model target exprs]
+  [model target exprs]
   (if (coll? exprs)
     (.addMultiplicationEquality model target (into-array exprs))
     (.addMultiplicationEquality model target exprs)))
 
 (defn add-no-overlap
-  [^CpModel model intervalVars]
+  [model intervalVars]
   (.addNoOverlap model (into-array intervalVars)))
 
 (defn add-no-overlap-2d
-  [^CpModel model]
+  [model]
   (.addNoOverlap2D model))
 
 (defn add-cumulative
-  [^CpModel model capacity]
+  [model capacity]
   (.addCumulative model capacity))
 
 (defn add-hint
-  [^CpModel model var value]
+  [model var value]
   (.addHint model var value))
 
 (defn clear-hints
-  [^CpModel model]
+  [model]
   (.clearHints model))
 
 (defn add-assumption
-  [^CpModel model lit]
+  [model lit]
   (.addAssumption model lit))
 
 (defn add-assumptions
-  [^CpModel model literals]
+  [model literals]
   (.addAssumption model (into-array literals)))
 
 (defn clear-assumptions
-  [^CpModel model]
+  [model]
   (.clearAssumptions model))
 
 (defn minimize
-  [^CpModel model expr]
+  [model expr]
   (.minimize model expr))
 
 (defn maximize
-  [^CpModel model expr]
+  [model expr]
   (.maximize model expr))
 
 (defn clear-objective
-  [^CpModel model]
+  [model]
   (.clearObjective model))
 
 (defn has-objective
-  [^CpModel model]
+  [model]
   (.hasObjective model))
 
 (defn add-decision-strategy
-  [^CpModel model variables varStr domStr]
+  [model variables varStr domStr]
   (.addDecisionStrategy model variables varStr domStr))
 
 (defn model-stats
-  [^CpModel model]
+  [model]
   (.modelStats model))
 
 (defn validate
-  [^CpModel model]
+  [model]
   (.validate model))
 
 (defn export-to-file
-  [^CpModel model ^String file]
+  [model ^String file]
   (.exportToFile model file))
 
 (defn model
-  [^CpModel model]
+  [model]
   (.model model))
 
 (defn negated
-  [^CpModel model index]
+  [model index]
   (.negated model index))
 
 (defn get-builder
-  [^CpModel model]
+  [model]
   (.getBuilder model))
