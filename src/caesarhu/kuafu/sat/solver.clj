@@ -1,6 +1,6 @@
 (ns caesarhu.kuafu.sat.solver
   (:require [caesarhu.kuafu.ortools :refer [ortools-loader]])
-  (:import [com.google.ortools.sat CpModel CpSolver CpSolverSolutionCallback]))
+  (:import [com.google.ortools.sat LinearArgument CpSolver CpSolverSolutionCallback]))
 
 @ortools-loader
 
@@ -24,7 +24,7 @@
   [solver expr]
   (.value solver expr))
 
-(defn boolean-value 
+(defn boolean-value
   [solver var]
   (.booleanValue solver var))
 
@@ -81,5 +81,6 @@
       (let [solution (cond
                        (sequential? thing) (mapv #(value this %) thing)
                        (fn? thing) (thing this)
+                       (instance? LinearArgument thing) (value this thing)
                        :else (throw (Exception. "solution-callback arguments fail!")))]
         (swap! values conj solution)))))

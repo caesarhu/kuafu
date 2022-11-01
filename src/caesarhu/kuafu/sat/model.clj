@@ -1,7 +1,7 @@
 (ns caesarhu.kuafu.sat.model
   (:require [caesarhu.kuafu.util :refer [rand-name]]
             [caesarhu.kuafu.ortools :refer [ortools-loader]])
-  (:import [com.google.ortools.sat CpModel Literal]
+  (:import [com.google.ortools.sat CpModel Literal LinearArgument]
            [com.google.ortools.util Domain]))
 
 @ortools-loader

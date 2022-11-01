@@ -18,8 +18,7 @@
     (m/add-equality model p (l/weighted-sum [a b c c b a] [100000 10000 1000 100 10 1]))
     (m/maximize model p)
     (m/add-multiplication-equality model p x y)
-    (s/solve solver model (s/callback values [p]))
-    (tap> (s/get-solution-info solver))
+    (s/solve solver model (s/callback values p))
     @values))
 
 (comment
