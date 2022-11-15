@@ -4,6 +4,8 @@
 
 @ortools-loader
 
+(defonce ^:dynamic *solutions* (atom (list)))
+
 (defn sat-solver
   []
   (CpSolver.))
@@ -75,7 +77,7 @@
   (.. solver (getParameters) (setEnumerateAllSolutions bool)))
 
 (defn callback
-  [values thing]
+  [thing]
   (proxy [CpSolverSolutionCallback] []
     (onSolutionCallback []
       (let [solution (cond
@@ -83,4 +85,4 @@
                        (fn? thing) (thing this)
                        (instance? LinearArgument thing) (value this thing)
                        :else (throw (Exception. "solution-callback arguments fail!")))]
-        (swap! values conj solution)))))
+        (swap! *solutions* conj solution)))))

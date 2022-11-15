@@ -12,7 +12,7 @@
         solver (s/sat-solver)]
     (m/add-modulo-equality model (m/int-var model 0) x y)
     (s/set-all-solutions solver true)
-    (s/solve solver model (s/callback values [x]))
+    (s/solve solver model (s/callback values x))
     @values))
 
 (comment
