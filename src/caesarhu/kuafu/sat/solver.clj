@@ -4,7 +4,7 @@
 
 @ortools-loader
 
-(defonce ^:dynamic *solutions* (atom (list)))
+(defonce ^:dynamic *solutions* (atom nil))
 
 (defn sat-solver
   []
