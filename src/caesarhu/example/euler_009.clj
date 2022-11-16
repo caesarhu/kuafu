@@ -1,26 +1,28 @@
 (ns caesarhu.example.euler-009
-  (:require [caesarhu.kuafu.sat :as sat])
-  (:import [com.google.ortools.sat CpModel IntVar CpSolverSolutionCallback LinearExpr]
-           [com.google.ortools.util Domain]))
+  (:require [caesarhu.kuafu.domain :as d]
+            [caesarhu.kuafu.sat.model :as m]
+            [caesarhu.kuafu.sat.solver :as s]
+            [caesarhu.kuafu.sat.linear-expr :as l]))
 
 (defn euler-009
   []
-  (let [model (sat/new-model)
-        target (.newConstant model 1000)
-        a (.newIntVar model 1 1000 "a")
-        b (.newIntVar model 1 1000 "b")
-        c (.newIntVar model 1 1000 "c")
-        a2 (.newIntVar model 1 1000000000 "a2")
-        b2 (.newIntVar model 1 1000000000 "b2")
-        c2 (.newIntVar model 1 1000000000 "c2")]
-    (.addMultiplicationEquality model a2 a a)
-    (.addMultiplicationEquality model b2 b b)
-    (.addMultiplicationEquality model c2 c c)
-    (.addEquality model c2 (LinearExpr/sum (into-array [a2 b2])))
-    (.addEquality model target (LinearExpr/sum (into-array [a b c])))
-    (->> (sat/solve model [a b c])
-         :values
-         (reduce *))))
+  (let [model (m/sat-model)
+        solver (s/sat-solver)
+        d1 (d/domain 1 1000)
+        d2 (d/domain 1 1000000)
+        [a b c] (repeatedly #(m/int-var model d1))
+        [a2 b2 c2] (repeatedly #(m/int-var model d2))]
+    (reset! s/*solutions* (list))
+    (m/add-less-than model a b)
+    (m/add-less-than model b c)
+    (m/add-multiplication-equality model a2 [a a])
+    (m/add-multiplication-equality model b2 [b b])
+    (m/add-multiplication-equality model c2 [c c])
+    (m/add-equality model c2 (l/sum [a2 b2]))
+    (m/add-equality model (m/int-var model 1000) (l/sum [a b c]))
+    (s/solve solver model (s/callback [a b c]))
+    (->> (first @s/*solutions*)
+         (apply *))))
 
 (comment
   (time (euler-009))

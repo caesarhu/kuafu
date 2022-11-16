@@ -1,17 +1,19 @@
 (ns caesarhu.example.euler-005
-  (:require [caesarhu.kuafu.sat :as sat])
-  (:import [com.google.ortools.sat CpModel IntVar CpSolverSolutionCallback LinearExpr]
-           [com.google.ortools.util Domain]))
+  (:require [caesarhu.kuafu.domain :as d]
+            [caesarhu.kuafu.sat.model :as m]
+            [caesarhu.kuafu.sat.solver :as s]))
 
 (defn euler-005
   [n]
-  (let [model (sat/new-model)
-        zero (.newConstant model 0)
-        x (.newIntVar model 2 (reduce * (range 2 (inc n))) "x")]
+  (let [model (m/sat-model)
+        zero (m/int-var model 0)
+        x (m/int-var model 2 (reduce * (range 2 (inc n))) "x")
+        solver (s/sat-solver)]
     (doseq [i (range 2 (inc n))]
-      (.addModuloEquality model zero x i))
-    (.minimize model x)
-    (sat/solve model [x])))
+      (m/add-modulo-equality model zero x i))
+    (m/minimize model x)
+    (s/solve solver model)
+    (s/value solver x)))
 
 (comment
   (time (euler-005 20))
