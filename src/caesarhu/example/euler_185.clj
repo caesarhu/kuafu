@@ -1,6 +1,8 @@
 (ns caesarhu.example.euler-185
-  (:require [caesarhu.kuafu.sat :as sat])
-  (:import [com.google.ortools.sat CpModel IntVar CpSolverSolutionCallback LinearExpr]))
+  (:require [caesarhu.kuafu.domain :as d]
+            [caesarhu.kuafu.sat.model :as m]
+            [caesarhu.kuafu.sat.solver :as s]
+            [caesarhu.kuafu.sat.linear-expr :as l]))
 
 (defn to-digits
   ([n] (to-digits n 10))
@@ -30,13 +32,13 @@
 
 (defn init-model
   [length]
-  (let [model (sat/new-model)
-        vars (->> (map #(.newBoolVar model (str "v" %)) (range (* base length)))
+  (let [model (m/sat-model)
+        vars (->> (map #(m/bool-var model (str "v" %)) (range (* base length)))
                   vec)]
     (doseq [x (range length)
             :let [digits (->> (map #(pos->number x %) (range base))
                               (map vars))]]
-      (.addExactlyOne model digits))
+      (m/add-exactly-one model digits))
     {:model model :vars vars}))
 
 (defn rule->constraint
@@ -45,7 +47,7 @@
         digits (->> (map-indexed vector (to-digits ds))
                     (map #(apply pos->number %))
                     (map vars))]
-    (.addEquality model (LinearExpr/sum (into-array digits)) n)))
+    (m/add-equality model (l/sum digits) n)))
 
 (defn rules->model
   [rules]
@@ -65,11 +67,10 @@
 
 (defn euler-185
   [rules]
-  (->> (rules->model rules)
-       vals
-       (apply sat/solve)
-       :values
-       answer->number))
+  (reset! s/*solutions* [])
+  (let [m (rules->model rules)]
+    (s/solve (s/sat-solver) (:model m) (s/callback (:vars m)))
+    (answer->number (first @s/*solutions*))))
 
 (def sample
   [[90342 2]
@@ -104,5 +105,6 @@
    [2659862637316867 2]])
 
 (comment
+  (euler-185 sample)
   (time (euler-185 target))
   )

@@ -24,6 +24,12 @@
     <developerConnection>scm:git:ssh://git@github.com/caesarhu/kuafu.git</developerConnection>
     <tag>v0.1.0-SNAPSHOT</tag>
   </scm>
+  <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <java.version>17</java.version>
+    </properties>
   <dependencies>
     <dependency>
       <groupId>org.clojure</groupId>
