@@ -4,7 +4,7 @@ A Clojure library designed to work with [OR-Tools](https://developers.google.com
 
 ## Usage
 
-本專案仍處於早期開發階段，以下是事項仍未完成：  
+本專案仍處於早期開發階段，以下事項仍未完成：  
 一、版權聲明  
 二、API文件  
 三、完整測試  
