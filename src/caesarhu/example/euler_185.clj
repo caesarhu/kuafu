@@ -1,6 +1,5 @@
 (ns caesarhu.example.euler-185
-  (:require [caesarhu.kuafu.domain :as d]
-            [caesarhu.kuafu.sat.model :as m]
+  (:require [caesarhu.kuafu.sat.model :as m]
             [caesarhu.kuafu.sat.solver :as s]
             [caesarhu.kuafu.sat.linear-expr :as l]))
 
@@ -67,7 +66,7 @@
 
 (defn euler-185
   [rules]
-  (reset! s/*solutions* [])
+  (reset! s/*solutions* (list))
   (let [m (rules->model rules)]
     (s/solve (s/sat-solver) (:model m) (s/callback (:vars m)))
     (answer->number (first @s/*solutions*))))
