@@ -41,7 +41,7 @@
     {:model model :vars vars}))
 
 (defn rule->constraint
-  [m [ds n :as rule]]
+  [m [ds n]]
   (let [{:keys [model vars]} m
         digits (->> (map-indexed vector (to-digits ds))
                     (map #(apply pos->number %))

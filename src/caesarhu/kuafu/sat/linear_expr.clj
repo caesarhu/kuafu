@@ -40,3 +40,7 @@
   [exprs coeffs]
   (LinearExpr/weightedSum (into-array exprs) (long-array coeffs)))
 
+(defn new-builder
+  []
+  (LinearExpr/newBuilder))
+
