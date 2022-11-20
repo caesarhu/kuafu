@@ -2,7 +2,8 @@
  :deps {org.clojure/clojure {:mvn/version "1.11.1"}
         com.google.ortools/ortools-java {:mvn/version "9.4.1874"}
         com.google.protobuf/protobuf-java {:mvn/version "3.21.9"}
-        functionalbytes/redelay {:mvn/version "1.1.0"}}
+        functionalbytes/redelay {:mvn/version "1.1.0"}
+        camel-snake-kebab/camel-snake-kebab {:mvn/version "0.4.3"}}
  :aliases
  {:test
   {:extra-paths ["test"]
