@@ -44,3 +44,24 @@
   []
   (LinearExpr/newBuilder))
 
+; LinearExprBuilder functions
+
+(defn build
+  [builder]
+  (.build builder))
+
+(defn add
+  [builder expr]
+  (.add builder expr))
+
+(defn add-sum
+  [builder exprs]
+  (.addSum builder (into-array exprs)))
+
+(defn add-term
+  [builder expr coeff]
+  (.addTerm builder expr coeff))
+
+(defn add-weighted-sum
+  [builder exprs coeffs]
+  (.addWeightedSum builder exprs coeffs))

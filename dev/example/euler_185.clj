@@ -3,8 +3,8 @@
             [caesarhu.kuafu.sat.solver :as s]
             [caesarhu.kuafu.sat.linear-expr :as l]))
 
-(defn to-digits
-  ([n] (to-digits n 10))
+(defn ->digits
+  ([n] (->digits n 10))
   ([n radix]
    (loop [n n
           res nil]
@@ -14,9 +14,9 @@
         (quot n radix)
         (cons (rem n radix) res))))))
 
-(defn to-number
+(defn ->number
   "Convert a collection of digits to a number"
-  ([xs] (to-number xs 10))
+  ([xs] (->number xs 10))
   ([xs radix]
    (let [expt (fn [x n]
                 (apply *' (repeat n x)))
@@ -32,8 +32,7 @@
 (defn init-model
   [length]
   (let [model (m/sat-model)
-        vars (->> (map #(m/bool-var model (str "v" %)) (range (* base length)))
-                  vec)]
+        vars (vec (map #(m/bool-var model (str "v" %)) (range (* base length))))]
     (doseq [x (range length)
             :let [digits (->> (map #(pos->number x %) (range base))
                               (map vars))]]
@@ -43,14 +42,14 @@
 (defn rule->constraint
   [m [ds n]]
   (let [{:keys [model vars]} m
-        digits (->> (map-indexed vector (to-digits ds))
+        digits (->> (map-indexed vector (->digits ds))
                     (map #(apply pos->number %))
                     (map vars))]
     (m/add-equality model (l/sum digits) n)))
 
 (defn rules->model
   [rules]
-  (let [length (count (to-digits (ffirst rules)))
+  (let [length (count (->digits (ffirst rules)))
         m (init-model length)]
     (doseq [rule rules]
       (rule->constraint m rule))
@@ -62,7 +61,7 @@
        (remove #(zero? (last %)))
        (map first)
        (map #(mod % base))
-       (to-number)))
+       (->number)))
 
 (defn euler-185
   [rules]

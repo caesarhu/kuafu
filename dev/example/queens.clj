@@ -11,12 +11,12 @@
         solver (s/sat-solver)
         domain (d/domain 0 (dec n))
         queens (vec (repeatedly n #(m/int-var model domain)))
-        diag1 (map #(.. (l/new-builder) (add (queens %)) (add %) build) (range n))
-        diag2 (map #(.. (l/new-builder) (add (queens %)) (add (- %)) build) (range n))
-        show-row (fn [x]
+        diag1 (map #(-> (l/new-builder) (l/add (queens %)) (l/add %) l/build) (range n))
+        diag2 (map #(-> (l/new-builder) (l/add (queens %)) (l/add (- %)) l/build) (range n))
+        make-row (fn [x]
                    (str/join " " (map #(if (= x %) "Q" "_") (range n))))
         show (fn [qv]
-               (map show-row qv))]
+               (map make-row qv))]
     (m/add-all-different model queens)
     (m/add-all-different model diag1)
     (m/add-all-different model diag2)
