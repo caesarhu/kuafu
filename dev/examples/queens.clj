@@ -1,4 +1,4 @@
-(ns caesarhu.example.queens
+(ns caesarhu.examples.queens
   (:require [caesarhu.kuafu.sat :as sat]
             [clojure.string :as str]))
 

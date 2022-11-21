@@ -1,4 +1,4 @@
-(ns caesarhu.example.euler-005
+(ns caesarhu.examples.euler-005
   (:require [caesarhu.kuafu.sat :as sat]))
 
 (defn euler-005
