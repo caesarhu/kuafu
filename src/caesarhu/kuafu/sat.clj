@@ -143,6 +143,14 @@
   [builder exprs coeffs]
   (.addWeightedSum builder exprs coeffs))
 
+; Constraint
+
+(defn only-enforce-if
+  [lit]
+  (if (sequential? lit)
+    (.onlyEnforceIf (into-array lit))
+    (.onlyEnforceIf lit)))
+
 ; CpModel
 
 (defn cp-model
