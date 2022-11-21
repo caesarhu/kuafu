@@ -1,19 +1,17 @@
 (ns caesarhu.example.euler-001
-  (:require [caesarhu.kuafu.domain :as d]
-            [caesarhu.kuafu.sat.model :as m]
-            [caesarhu.kuafu.sat.solver :as s]))
+  (:require [caesarhu.kuafu.sat :as sat]))
 
 (defn euler-001
   [n]
-  (let [model (m/sat-model)
-        x (m/int-var model 1 (dec n) "x")
-        y (m/int-var model (d/from-values [3 5]) "y")
-        solver (s/sat-solver)]
-    (reset! s/*solutions* (list))
-    (m/add-modulo-equality model (m/int-var model 0) x y)
-    (s/set-all-solutions solver true)
-    (s/solve solver model (s/callback x))
-    (->> @s/*solutions*
+  (let [model (sat/cp-model)
+        x (sat/int-var model 1 (dec n) "x")
+        y (sat/int-var model (sat/from-values [3 5]) "y")
+        solver (sat/cp-solver)]
+    (reset! sat/*solutions* (list))
+    (sat/add-modulo-equality model (sat/int-var model 0) x y)
+    (sat/set-all-solutions solver true)
+    (sat/solve solver model (sat/callback x))
+    (->> @sat/*solutions*
          set
          (reduce +))))
 

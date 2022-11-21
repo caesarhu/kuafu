@@ -47,14 +47,6 @@
   [d value]
   (.contains d value))
 
-(defn delete
-  [d]
-  (.delete d))
-
-(defn finalize
-  [d]
-  (.finalize d))
-
 (defn flattened-intervals
   [d]
   (.flattenedIntervals d))

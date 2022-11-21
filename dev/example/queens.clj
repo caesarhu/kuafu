@@ -1,29 +1,26 @@
 (ns caesarhu.example.queens
-  (:require [caesarhu.kuafu.domain :as d]
-            [caesarhu.kuafu.sat.model :as m]
-            [caesarhu.kuafu.sat.solver :as s]
-            [caesarhu.kuafu.sat.linear-expr :as l]
+  (:require [caesarhu.kuafu.sat :as sat]
             [clojure.string :as str]))
 
 (defn queens-solver
   [n]
-  (let [model (m/sat-model)
-        solver (s/sat-solver)
-        domain (d/domain 0 (dec n))
-        queens (vec (repeatedly n #(m/int-var model domain)))
-        diag1 (map #(-> (l/new-builder) (l/add (queens %)) (l/add %) l/build) (range n))
-        diag2 (map #(-> (l/new-builder) (l/add (queens %)) (l/add (- %)) l/build) (range n))
+  (let [model (sat/cp-model)
+        solver (sat/cp-solver)
+        domain (sat/domain 0 (dec n))
+        queens (vec (repeatedly n #(sat/int-var model domain)))
+        diag1 (map #(-> (sat/new-builder) (sat/add (queens %)) (sat/add %) sat/build) (range n))
+        diag2 (map #(-> (sat/new-builder) (sat/add (queens %)) (sat/add (- %)) sat/build) (range n))
         make-row (fn [x]
                    (str/join " " (map #(if (= x %) "Q" "_") (range n))))
-        show (fn [qv]
+        make-table (fn [qv]
                (map make-row qv))]
-    (m/add-all-different model queens)
-    (m/add-all-different model diag1)
-    (m/add-all-different model diag2)
-    (s/set-all-solutions solver true)
-    (reset! s/*solutions* (list))
-    (s/solve solver model (s/callback queens))
-    (map show @s/*solutions*)))
+    (sat/add-all-different model queens)
+    (sat/add-all-different model diag1)
+    (sat/add-all-different model diag2)
+    (sat/set-all-solutions solver true)
+    (reset! sat/*solutions* (list))
+    (sat/solve solver model (sat/callback queens))
+    (map make-table @sat/*solutions*)))
 
 (comment
   (queens-solver 8)
