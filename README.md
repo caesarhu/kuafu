@@ -5,10 +5,16 @@ A Clojure library designed to work with [OR-Tools](https://developers.google.com
 ## Usage
 
 本專案仍處於早期開發階段，以下事項仍未完成：  
-一、版權聲明  
-二、API文件  
-三、完整測試  
-四、clojure OR-Tools的用法改進
+一、API文件未提供，請參考OR-Tools官方[參考文件](https://or-tools.github.io/docs/java/namespacecom_1_1google_1_1ortools_1_1sat.html)  
+二、完整測試  
+三、clojure OR-Tools的用法改進  
+四、目前只支援Constraint Programming CP-SAT solver  
+
+Clojure CLI/deps.edn
+```edn
+{:git/url "https://github.com/caesarhu/kuafu"
+ :git/sha "09e46d7"}
+```
 
 Using OR-tools SAT: 8-queens problem solver
 ```clojure
