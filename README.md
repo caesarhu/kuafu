@@ -13,8 +13,8 @@ A Clojure library designed to work with [OR-Tools](https://developers.google.com
 Clojure CLI/deps.edn
 ```edn
 {:git/url "https://github.com/caesarhu/kuafu"
- :git/tag "v0.1.31"
- :git/sha "09e46d7"}
+ :git/tag "v0.1.32"
+ :git/sha "473342f"}
 ```
 
 Using OR-tools SAT: 8-queens problem solver
