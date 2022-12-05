@@ -1,7 +1,7 @@
 {:paths ["src" "resources"]
  :deps {org.clojure/clojure {:mvn/version "1.11.1"}
-        com.google.ortools/ortools-java {:mvn/version "9.4.1874"}
-        com.google.protobuf/protobuf-java {:mvn/version "3.21.9"}
+        com.google.ortools/ortools-java {:mvn/version "9.5.2237"}
+        com.google.protobuf/protobuf-java {:mvn/version "3.21.10"}
         functionalbytes/redelay {:mvn/version "1.1.0"}
         camel-snake-kebab/camel-snake-kebab {:mvn/version "0.4.3"}}
  :aliases
@@ -11,5 +11,5 @@
                 io.github.cognitect-labs/test-runner
                 {:git/tag "v0.5.1" :git/sha "dfb30dd"}}}
   :build {:deps {io.github.seancorfield/build-clj
-                 {:git/tag "v0.8.3" :git/sha "7ac1f8d"}}
+                 {:git/tag "v0.8.5" :git/sha "de693d0"}}
           :ns-default build}}}

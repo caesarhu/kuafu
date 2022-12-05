@@ -8,7 +8,7 @@ A Clojure library designed to work with [OR-Tools](https://developers.google.com
 一、API文件未提供，請參考OR-Tools官方[參考文件](https://or-tools.github.io/docs/java/namespacecom_1_1google_1_1ortools_1_1sat.html)  
 二、完整測試  
 三、clojure OR-Tools的用法改進  
-四、目前只支援Constraint Programming CP-SAT solver  
+四、目前支援Constraint Programming CP-SAT solver 及 Graph  
 
 Clojure CLI/deps.edn
 ```edn
