@@ -1,4 +1,4 @@
-(ns caesarhu.examples.euler-185
+(ns euler-185
   (:require [caesarhu.kuafu.sat :as sat]))
 
 (defn ->digits

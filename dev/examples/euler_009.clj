@@ -1,4 +1,4 @@
-(ns caesarhu.examples.euler-009
+(ns euler-009
   (:require [caesarhu.kuafu.sat :as sat]))
 
 (defn square
