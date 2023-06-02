@@ -1,7 +1,8 @@
 (ns caesarhu.kuafu.sat
   (:require [caesarhu.kuafu.ortools :refer [ortools-loader]]
             [caesarhu.kuafu.util :refer [rand-name]]
-            [camel-snake-kebab.core :as csk])
+            [camel-snake-kebab.core :as csk]
+            [clojure.walk :as w])
   (:import [com.google.ortools.util Domain]
            [com.google.ortools.sat LinearExpr CpModel LinearArgument CpSolver CpSolverSolutionCallback]))
 
@@ -496,8 +497,11 @@
   (proxy [CpSolverSolutionCallback] []
     (onSolutionCallback []
       (let [solution (cond
-                       (sequential? thing) (mapv #(value this %) thing)
-                       (fn? thing) (thing this)
+                       (coll? thing) (w/prewalk (fn [x]
+                                                  (if (instance? LinearArgument x)
+                                                    (value this x)
+                                                    x))
+                                                thing)
                        (instance? LinearArgument thing) (value this thing)
-                       :else (throw (Exception. "solution-callback arguments fail!")))]
+                       :else thing)]
         (swap! *solutions* conj solution)))))
