@@ -515,3 +515,13 @@ In the comments below, the domain of *this will always be written 'D'."
          (swap! solutions conj solution)))))
   ([thing]
    (callback thing *solutions*)))
+
+(defn solve-all
+  ([solver model thing]
+   (let [solutions (atom [])]
+     (set-all-solutions solver true)
+     {:status (solve solver model (callback thing solutions))
+      :solutions @solutions}))
+  ([model thing]
+   (let [solver (cp-solver)]
+     (solve-all solver model thing))))
