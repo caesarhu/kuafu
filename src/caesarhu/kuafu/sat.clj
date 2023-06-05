@@ -8,11 +8,19 @@
 
 @ortools-loader
 
-(defonce ^:dynamic *solutions* (atom nil))
+; common atom for solutions
+(defonce ^:dynamic *solutions* (atom []))
 
 ; java Domain class
 
 (defn domain
+  "We call domain any subset of Int64 = [kint64min, kint64max].
+
+This class can be used to represent such set efficiently as a sorted and
+non-adjacent list of intervals. This is efficient as long as the size of such
+list stays reasonable.
+
+In the comments below, the domain of *this will always be written 'D'."
   ([]
    (Domain.))
   ([value]
@@ -493,15 +501,17 @@
   (.. solver (getParameters) (setEnumerateAllSolutions bool)))
 
 (defn callback
-  [thing]
-  (proxy [CpSolverSolutionCallback] []
-    (onSolutionCallback []
-      (let [solution (cond
-                       (coll? thing) (w/prewalk (fn [x]
-                                                  (if (instance? LinearArgument x)
-                                                    (value this x)
-                                                    x))
-                                                thing)
-                       (instance? LinearArgument thing) (value this thing)
-                       :else thing)]
-        (swap! *solutions* conj solution)))))
+  ([thing solutions]
+   (proxy [CpSolverSolutionCallback] []
+     (onSolutionCallback []
+       (let [solution (cond
+                        (coll? thing) (w/prewalk (fn [x]
+                                                   (if (instance? LinearArgument x)
+                                                     (value this x)
+                                                     x))
+                                                 thing)
+                        (instance? LinearArgument thing) (value this thing)
+                        :else thing)]
+         (swap! solutions conj solution)))))
+  ([thing]
+   (callback thing *solutions*)))
