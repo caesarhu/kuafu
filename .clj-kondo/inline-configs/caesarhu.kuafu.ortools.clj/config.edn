@@ -1,0 +1,1 @@
+{:config-in-call {caesarhu.kuafu.ortools/or-call {:ignore [:unresolved-symbol :type-mismatch]}}}

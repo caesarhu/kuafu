@@ -1,5 +1,7 @@
-(ns euler-185
-  (:require [caesarhu.kuafu.sat :as sat]))
+(ns caesarhu.examples.euler-185
+  (:require [caesarhu.kuafu.ortools :refer [or-call]]
+            [caesarhu.kuafu.sat :as sat])
+  (:import [com.google.ortools.sat LinearExpr]))
 
 (defn ->digits
   ([n] (->digits n 10))
@@ -34,7 +36,7 @@
     (doseq [x (range length)
             :let [digits (->> (map #(pos->number x %) (range base))
                               (map vars))]]
-      (sat/add-exactly-one model digits))
+      (or-call model addExactlyOne digits))
     {:model model :vars vars}))
 
 (defn rule->constraint
@@ -43,7 +45,7 @@
         digits (->> (map-indexed vector (->digits ds))
                     (map #(apply pos->number %))
                     (map vars))]
-    (sat/add-equality model (sat/sum digits) n)))
+    (or-call model addEquality (or-call LinearExpr sum digits) n)))
 
 (defn rules->model
   [rules]
@@ -63,10 +65,11 @@
 
 (defn euler-185
   [rules]
-  (reset! sat/*solutions* (list))
   (let [m (rules->model rules)]
-    (sat/solve (sat/cp-solver) (:model m) (sat/callback (:vars m)))
-    (answer->number (first @sat/*solutions*))))
+    (->> (sat/solve-all (sat/cp-solver) (:model m) (:vars m))
+         :solutions
+         first
+         answer->number)))
 
 (def sample
   [[90342 2]
