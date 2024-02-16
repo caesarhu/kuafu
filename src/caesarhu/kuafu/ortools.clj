@@ -21,3 +21,9 @@
   {:clj-kondo/ignore [:unresolved-symbol :type-mismatch]}
   [klass member & args*]
   `(. ~klass ~member ~@(map #(list args-transfer %) args*)))
+
+(comment
+  (def my-array (into-array Integer/TYPE [1 2 3]))
+  (aset my-array 1 10)
+  (into [] my-array)
+  )

@@ -8,22 +8,6 @@
 
 @ortools-loader
 
-(defn rand-letter-str
-  "random string."
-  [^long len]
-  (transduce
-   (map (fn [_]
-          (let [rnd (rand-int 52)]
-            (char (+ (mod rnd 26)
-                     (int (if (< rnd 26) \a \A)))))))
-   str
-   "" (range len)))
-
-(defn rand-name
-  "random name if don't need a name for IntVar"
-  []
-  (rand-letter-str 10))
-
 ; common atom for solutions
 (defonce ^:dynamic *solutions* (atom []))
 
@@ -50,7 +34,7 @@
   ([model name]
    (.newBoolVar model name))
   ([model]
-   (.newBoolVar model (rand-name))))
+   (.newBoolVar model (str (gensym)))))
 
 (defmulti int-var
   "ortools cpModel IntVar"
@@ -58,9 +42,9 @@
 
 (defmethod int-var [Long] [model value] (.newConstant model value))
 (defmethod int-var [Domain String] [model d name] (.newIntVarFromDomain model d name))
-(defmethod int-var [Domain] [model d] (.newIntVarFromDomain model d (rand-name)))
+(defmethod int-var [Domain] [model d] (.newIntVarFromDomain model d (str (gensym))))
 (defmethod int-var [Long Long String] [model lb ub name] (.newIntVar model lb ub name))
-(defmethod int-var [Long Long] [model lb ub] (.newIntVar model lb ub (rand-name)))
+(defmethod int-var [Long Long] [model lb ub] (.newIntVar model lb ub (str (gensym))))
 
 ; CpSolver
 
